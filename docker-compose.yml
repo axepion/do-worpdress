@@ -1,0 +1,36 @@
+version: '3.0'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./backend:/var/www
+
+  php:
+#    image: php:fpm
+    build: ./php
+    volumes:
+      - ./backend:/var/www
+        
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: testpass
+      MYSQL_DATABASE: testdbwp
+      MYSQL_USER: testuserwp
+      MYSQL_PASSWORD: testpasswp
+    volumes: 
+      - ./mysql:/var/lib/mysql
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
